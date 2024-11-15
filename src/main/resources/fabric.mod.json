@@ -6,7 +6,7 @@
   "description": "Stars, automation, trinkets, and a dream...",
   "authors": ["jaskarth", "emilyploszaj"],
   "contact": {
-    "repo": "https://github.com/jaskarth/cerulean"
+    "sources": "https://github.com/jaskarth/cerulean"
   },
   "license": "LGPL-3.0",
   "icon": "assets/cerulean/icon.png",
