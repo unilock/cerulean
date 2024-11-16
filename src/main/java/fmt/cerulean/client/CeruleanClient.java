@@ -1,6 +1,5 @@
 package fmt.cerulean.client;
 
-import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
@@ -27,11 +26,11 @@ public class CeruleanClient implements ClientModInitializer {
 		CeruleanParticles.init();
 		CeruleanBlockEntityRenderers.init();
 
-		DimensionRenderingRegistry.registerDimensionEffects(Cerulean.id("dreamscape"), new DreamscapeEffects());
-		DimensionRenderingRegistry.registerDimensionEffects(Cerulean.id("skies"), new SkiesEffects());
+		DimensionRenderingRegistry.registerDimensionEffects(CeruleanDimensions.DREAMSCAPE, new DreamscapeEffects());
+		DimensionRenderingRegistry.registerDimensionEffects(CeruleanDimensions.SKIES, new SkiesEffects());
 
 		DimensionRenderingRegistry.registerSkyRenderer(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE), new DreamscapeRenderer());
-		DimensionRenderingRegistry.registerSkyRenderer(RegistryKey.of(RegistryKeys.WORLD, Cerulean.id("skies")), new SkiesRenderer());
+		DimensionRenderingRegistry.registerSkyRenderer(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.SKIES), new SkiesRenderer());
 
 		CeruleanClientNetworking.init();
 

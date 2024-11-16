@@ -18,7 +18,7 @@ public class BerryFlavoringBrushRecipe implements BrushRecipe {
 
 	@Override
 	public boolean canCraft(PigmentInventory inventory) {
-		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && !s.get(DataComponentTypes.CUSTOM_DATA).getNbt().contains("Flow"))) {
+		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && !(s.contains(DataComponentTypes.CUSTOM_DATA) && s.get(DataComponentTypes.CUSTOM_DATA).getNbt().contains("Flow")))) {
 			return true;
 		}
 		return false;

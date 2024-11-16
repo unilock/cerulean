@@ -101,7 +101,7 @@ public class DreamscapeTeleporter {
 			int transY = endY - startY;
 			int transZ = endZ - startZ;
 
-			System.out.println(new BlockPos(startX, startY, startZ) + " -> " + new BlockPos(endX, endY, endZ) + " :" + new BlockPos(transX, transY, transZ));
+//			System.out.println(new BlockPos(startX, startY, startZ) + " -> " + new BlockPos(endX, endY, endZ) + " :" + new BlockPos(transX, transY, transZ));
 
 			ServerWorld dreamscape = world.getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE));
 

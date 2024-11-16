@@ -50,11 +50,11 @@ public class Cerulean implements ModInitializer {
 		BrushRecipes.init();
 		
 
-		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);
-		Registry.register(Registries.BIOME_SOURCE, id("skies"), SkiesBiomeSource.CODEC);
+		Registry.register(Registries.BIOME_SOURCE, CeruleanDimensions.DREAMSCAPE, DreamscapeBiomeSource.CODEC);
+		Registry.register(Registries.BIOME_SOURCE, CeruleanDimensions.SKIES, SkiesBiomeSource.CODEC);
 
-		Registry.register(Registries.CHUNK_GENERATOR, id("dreamscape"), DreamscapeChunkGenerator.CODEC);
-		Registry.register(Registries.CHUNK_GENERATOR, id("skies"), SkiesChunkGenerator.CODEC);
+		Registry.register(Registries.CHUNK_GENERATOR, CeruleanDimensions.DREAMSCAPE, DreamscapeChunkGenerator.CODEC);
+		Registry.register(Registries.CHUNK_GENERATOR, CeruleanDimensions.SKIES, SkiesChunkGenerator.CODEC);
 
 		UseItemCallback.EVENT.register((player, world, hand) -> {
 			if (world.getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {

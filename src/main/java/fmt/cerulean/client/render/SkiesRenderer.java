@@ -20,17 +20,21 @@ public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
 
 	@Override
 	public void render(WorldRenderContext context) {
+		MatrixStack matrices = context.matrixStack();
+		Matrix4f proj = context.projectionMatrix();
+		if (matrices == null || proj == null) {
+			System.out.println("matrices are null");
+			return;
+		}
+
 		if (vbo == null) {
 			vbo = RenderVFX.renderStars(Tessellator.getInstance());
 		}
 
-		MatrixStack matrices = context.matrixStack();
-		Matrix4f proj = context.projectionMatrix();
-
 		BackgroundRenderer.clearFog();
 
 		matrices.push();
-		float normGametime = MinecraftClient.getInstance().world.getTime() / 24000f;
+		float normGametime = context.world().getTime() / 24000f;
 		normGametime *= 0.3;
 		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(normGametime * 360.0F));
 		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((normGametime + 1.2f) * 360.0F));
