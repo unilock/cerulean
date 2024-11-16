@@ -4,5 +4,7 @@
   "ingredient": {
     "item": "cerulean:spacebricks"
   },
-  "result": "cerulean:spacebrick_wall"
+  "result": {
+    "id": "cerulean:spacebrick_wall"
+  }
 }

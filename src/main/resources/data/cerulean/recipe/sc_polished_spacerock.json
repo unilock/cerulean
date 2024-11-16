@@ -4,5 +4,7 @@
   "ingredient": {
     "item": "cerulean:spacerock"
   },
-  "result": "cerulean:polished_spacerock"
+  "result": {
+    "id": "cerulean:polished_spacerock"
+  }
 }
