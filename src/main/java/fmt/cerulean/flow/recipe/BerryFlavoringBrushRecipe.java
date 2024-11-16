@@ -2,6 +2,7 @@ package fmt.cerulean.flow.recipe;
 
 import fmt.cerulean.item.BerryItem;
 import fmt.cerulean.registry.CeruleanItems;
+import net.minecraft.component.DataComponentTypes;
 
 public class BerryFlavoringBrushRecipe implements BrushRecipe {
 
@@ -17,7 +18,7 @@ public class BerryFlavoringBrushRecipe implements BrushRecipe {
 
 	@Override
 	public boolean canCraft(PigmentInventory inventory) {
-		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && s.getNbt() == null)) {
+		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && !s.get(DataComponentTypes.CUSTOM_DATA).getNbt().contains("Flow"))) {
 			return true;
 		}
 		return false;

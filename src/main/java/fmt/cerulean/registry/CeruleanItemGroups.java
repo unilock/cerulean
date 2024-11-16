@@ -23,7 +23,7 @@ public class CeruleanItemGroups {
 				.icon(() -> new ItemStack(CeruleanBlocks.CORAL))
 				.entries((ctx, e) -> {
 					for (RegistryEntry<Item> entry : Registries.ITEM.getIndexedEntries()) {
-						Identifier id = entry.getKey().get().getValue();
+						Identifier id = entry.getKey().orElseThrow().getValue();
 						if (id.getNamespace().equals(Cerulean.ID) && !EXCLUDED.contains(id.getPath())) {
 							e.add(new ItemStack(Registries.ITEM.get(id)));
 						}

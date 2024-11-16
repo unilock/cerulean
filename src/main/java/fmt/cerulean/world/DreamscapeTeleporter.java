@@ -3,7 +3,6 @@ package fmt.cerulean.world;
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.*;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.registry.RegistryKey;
@@ -11,13 +10,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.border.WorldBorder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class DreamscapeTeleporter {
 	private static class TeleportGroup {
@@ -225,7 +222,7 @@ public class DreamscapeTeleporter {
 					}
 				});
 
-				FabricDimensions.teleport(p, dreamscape, new TeleportTarget(p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch()));
+				p.teleportTo(new TeleportTarget(dreamscape, p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch(), TeleportTarget.NO_OP));
 			}
 		}
 	}

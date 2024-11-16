@@ -14,7 +14,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -52,7 +51,7 @@ public class ReedsPlantBlock extends AbstractPlantBlock {
 			return to;
 		}
 
-		return to.with(BERRIES, (Boolean)from.get(BERRIES));
+		return to.with(BERRIES, from.get(BERRIES));
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class ReedsPlantBlock extends AbstractPlantBlock {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (state.get(BERRIES)) {
 			Block.dropStack(world, pos, new ItemStack(CeruleanItems.BERRIES, 1));
 			float f = MathHelper.nextBetween(world.random, 0.8F, 1.2F);

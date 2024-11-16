@@ -1,7 +1,11 @@
 package fmt.cerulean.net;
 
 import fmt.cerulean.block.entity.MimicBlockEntity;
+import fmt.cerulean.net.payload.CloseBehindPayload;
+import fmt.cerulean.net.payload.DsSyncPayload;
+import fmt.cerulean.net.payload.MagicAttackPayload;
 import fmt.cerulean.registry.CeruleanBlocks;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -14,20 +18,22 @@ import net.minecraft.util.math.Direction;
 
 public class CeruleanServerNetworking {
 	public static void init() {
-		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.MAGIC_ATTACK, (s, p, h, buf, rs) -> {
-			int eId = buf.readVarInt();
+		PayloadTypeRegistry.playC2S().register(CloseBehindPayload.ID, CloseBehindPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(MagicAttackPayload.ID, MagicAttackPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(DsSyncPayload.ID, DsSyncPayload.CODEC);
 
-			s.execute(() -> {
-				Entity entity = p.getServerWorld().getEntityById(eId);
+		ServerPlayNetworking.registerGlobalReceiver(MagicAttackPayload.ID, (payload, context) -> {
+			context.server().execute(() -> {
+				Entity entity = context.player().getServerWorld().getEntityById(payload.eId());
 				entity.damage(entity.getDamageSources().magic(), 12);
 			});
 		});
 
-		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.CLOSE_BEHIND, (s, p, h, buf, rs) -> {
-			s.execute(() -> {
-				ServerWorld world = p.getServerWorld();
+		ServerPlayNetworking.registerGlobalReceiver(CloseBehindPayload.ID, (payload, context) -> {
+			context.server().execute(() -> {
+				ServerWorld world = context.player().getServerWorld();
 
-				BlockPos pos = p.getLandingPos();
+				BlockPos pos = context.player().getLandingPos();
 				BlockEntity be = world.getBlockEntity(pos);
 				if (be instanceof MimicBlockEntity mbe) {
 					Direction dir = mbe.facing;

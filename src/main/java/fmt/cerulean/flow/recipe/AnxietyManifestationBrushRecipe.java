@@ -5,8 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 
@@ -27,21 +27,22 @@ public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 
 	@Override
 	public void craft(PigmentInventory inventory) {
-		ItemStack stack = inventory.find(s -> s.getItem() instanceof MiningToolItem);
-		if (!stack.isEmpty() && stack.getItem() instanceof MiningToolItem ti) {
-			inventory.keepAlive(stack);
-			World world = inventory.world;
-			for (int i = 1; i < 6; i++) {
-				try {
-					BlockPos pos = inventory.pos.offset(inventory.direction, i);
-					BlockState state = world.getBlockState(pos);
-					if (!(state.getBlock() instanceof SaplingBlock) && ti.isSuitableFor(stack, state)) {
-						world.breakBlock(pos, true);
-						stack.damage(1, world.getRandom(), null);
-						return;
+		if (inventory.world instanceof ServerWorld world) {
+			ItemStack stack = inventory.find(s -> s.getItem() instanceof MiningToolItem);
+			if (!stack.isEmpty() && stack.getItem() instanceof MiningToolItem ti) {
+				inventory.keepAlive(stack);
+				for (int i = 1; i < 6; i++) {
+					try {
+						BlockPos pos = inventory.pos.offset(inventory.direction, i);
+						BlockState state = world.getBlockState(pos);
+						if (!(state.getBlock() instanceof SaplingBlock) && ti.isCorrectForDrops(stack, state)) {
+							world.breakBlock(pos, true);
+							stack.damage(1, world, null, item -> {});
+							return;
+						}
+					} catch (Exception e) {
+						// oops!
 					}
-				} catch (Exception e) {
-					// oops!
 				}
 			}
 		}

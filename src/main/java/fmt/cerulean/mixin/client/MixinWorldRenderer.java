@@ -5,7 +5,8 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,12 +19,12 @@ public class MixinWorldRenderer {
 
 	@Redirect(method = "processWorldEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
 	private void cerulean$noPortalSounds(SoundManager instance, SoundInstance sound) {
-		Identifier id = this.world.getDimensionKey().getValue();
-		if (id.equals(CeruleanDimensions.DREAMSCAPE)) {
+		RegistryEntry<DimensionType> entry = this.world.getDimensionEntry();
+		if (entry.matchesId(CeruleanDimensions.DREAMSCAPE)) {
 			return;
 		}
 
-		if (id.equals(CeruleanDimensions.SKIES)) {
+		if (entry.matchesId(CeruleanDimensions.SKIES)) {
 			return;
 		}
 

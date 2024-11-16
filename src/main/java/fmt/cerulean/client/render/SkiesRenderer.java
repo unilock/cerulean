@@ -21,7 +21,7 @@ public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
 	@Override
 	public void render(WorldRenderContext context) {
 		if (vbo == null) {
-			vbo = RenderVFX.renderStars(Tessellator.getInstance().getBuffer());
+			vbo = RenderVFX.renderStars(Tessellator.getInstance());
 		}
 
 		MatrixStack matrices = context.matrixStack();

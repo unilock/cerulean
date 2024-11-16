@@ -73,11 +73,11 @@ public class StarParticle extends BillboardParticle {
 
 		public Particle createParticle(StarParticleType effect, ClientWorld clientWorld, double x, double y, double z, double vx, double vy, double vz) {
 			StarParticle particle = new StarParticle(clientWorld, x, y, z, vx, vy, vz);
-			particle.setColor(effect.red, effect.green, effect.blue);
+			particle.setColor(effect.red(), effect.green(), effect.blue());
 			particle.provider = spriteProvider;
 			particle.setAlpha(0.5f);
-			particle.collidesWithWorld = effect.collision;
-			if (effect.shortLife) {
+			particle.collidesWithWorld = effect.collision();
+			if (effect.shortLife()) {
 				particle.setMaxAge(6);
 			}
 			return particle;

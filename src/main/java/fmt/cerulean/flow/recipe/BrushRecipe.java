@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
 public interface BrushRecipe extends Recipe<PigmentInventory> {
@@ -31,8 +31,8 @@ public interface BrushRecipe extends Recipe<PigmentInventory> {
 	}
 
 	@Override
-	default ItemStack craft(PigmentInventory inventory, DynamicRegistryManager registryManager) {
-		craft(inventory);
+	default ItemStack craft(PigmentInventory input, RegistryWrapper.WrapperLookup lookup) {
+		craft(input);
 		return ItemStack.EMPTY;
 	}
 
@@ -42,7 +42,7 @@ public interface BrushRecipe extends Recipe<PigmentInventory> {
 	}
 
 	@Override
-	default ItemStack getResult(DynamicRegistryManager registryManager) {
+	default ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
 		return ItemStack.EMPTY;
 	}
 

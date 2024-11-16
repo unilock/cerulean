@@ -11,12 +11,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity implements Counterful {
+	@Unique
 	private final DimensionState cerulean$dimensionState = new DimensionState();
 
 	protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
@@ -25,7 +27,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements Counterf
 
 	@Inject(method = "isBlockBreakingRestricted", at = @At("HEAD"), cancellable = true)
 	private void cerulean$dreamscapeInteraction(World world, BlockPos pos, GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
-		if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (world.getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
 			cir.setReturnValue(true);
 		}
 	}
@@ -33,7 +35,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements Counterf
 	@Override
 	protected void tickInVoid() {
 		World world = this.getWorld();
-		if (!world.isClient() && world.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
+		if (!world.isClient() && world.getDimensionEntry().matchesId(CeruleanDimensions.SKIES)) {
 			cerulean$dimensionState.melancholy++;
 			cerulean$dimensionState.sync((ServerPlayerEntity) (Object)this);
 		} else {

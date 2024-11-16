@@ -32,8 +32,8 @@ import fmt.cerulean.flow.recipe.AgoraphobicGardeningBrushRecipe;
 import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItems;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -91,7 +91,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 			} else if (recipe instanceof AnxietyManifestationBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					List.of(of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES)),
-					List.of(EmiIngredient.of(ItemTags.TOOLS)),
+					List.of(EmiIngredient.of(ConventionalItemTags.TOOLS)),
 					EmiStack.EMPTY,
 					List.of(),
 					List.of(),

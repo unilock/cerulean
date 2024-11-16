@@ -5,12 +5,14 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NoiseConfig.class)
 public class MixinNoiseConfig implements Seedy {
+	@Unique
 	private long cerulean$seed;
 
 	@Inject(method = "<init>", at = @At("TAIL"))

@@ -4,7 +4,6 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.block.entity.WellBlockEntity;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,7 +21,7 @@ public class CeruleanBlockEntities {
 	public static void init() {
 	}
 	
-	private static <T extends BlockEntity> BlockEntityType<T> register(String path, FabricBlockEntityTypeBuilder.Factory<T> function, Block... blocks) {
-		return Registry.register(Registries.BLOCK_ENTITY_TYPE, Cerulean.id(path), FabricBlockEntityTypeBuilder.create(function, blocks).build());
+	private static <T extends BlockEntity> BlockEntityType<T> register(String path, BlockEntityType.BlockEntityFactory<T> function, Block... blocks) {
+		return Registry.register(Registries.BLOCK_ENTITY_TYPE, Cerulean.id(path), BlockEntityType.Builder.create(function, blocks).build());
 	}
 }

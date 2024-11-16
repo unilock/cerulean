@@ -112,7 +112,6 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(true) : super.getFluidState(state);
 	}

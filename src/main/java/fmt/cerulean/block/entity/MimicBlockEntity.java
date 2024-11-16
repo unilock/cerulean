@@ -1,17 +1,14 @@
 package fmt.cerulean.block.entity;
 
 import fmt.cerulean.registry.CeruleanBlockEntities;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -32,27 +29,23 @@ public class MimicBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return this.createNbt();
+	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+		return this.createNbt(registryLookup);
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
+	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
 
-		RegistryEntryLookup<Block> registryEntryLookup = this.world != null
-				? this.world.createCommandRegistryWrapper(RegistryKeys.BLOCK)
-				: Registries.BLOCK.getReadOnlyWrapper();
-
-		state = NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("Block"));
+		state = NbtHelper.toBlockState(registryLookup.getWrapperOrThrow(RegistryKeys.BLOCK), nbt.getCompound("Block"));
 		dist = nbt.getInt("Dist");
 		facing = Direction.byId(nbt.getByte("Dir"));
 		alone = nbt.getBoolean("Alone");
 	}
 
 	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
+	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(nbt, registryLookup);
 
 		nbt.put("Block", NbtHelper.fromBlockState(this.state == null ? Blocks.BEDROCK.getDefaultState() : state));
 		nbt.putInt("Dist", dist);

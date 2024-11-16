@@ -1,6 +1,6 @@
 package fmt.cerulean.world.gen;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,10 +21,9 @@ import net.minecraft.world.gen.noise.NoiseConfig;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class DreamscapeChunkGenerator extends ChunkGenerator {
-	public static final Codec<DreamscapeChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<DreamscapeChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter(b -> b.biomeSource)
 	).apply(instance, DreamscapeChunkGenerator::new));
 
@@ -33,7 +32,7 @@ public class DreamscapeChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected MapCodec<? extends ChunkGenerator> getCodec() {
 		return CODEC;
 	}
 
@@ -58,7 +57,7 @@ public class DreamscapeChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
+	public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
 		chunk.setBlockState(new BlockPos(0, 64, 0), Blocks.STONE.getDefaultState(), false);
 		return CompletableFuture.completedFuture(chunk);
 	}

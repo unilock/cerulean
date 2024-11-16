@@ -105,8 +105,8 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		});
 		if (inputStars.size() > 0) {
 			widgets.addSlot(PIPE, 0, starY).drawBack(false);
-			widgets.addSlot(inputStars.get(0), 18, starY).drawBack(false);
-			addParticles(particles, inputStars.get(0), starY, true, false, random);
+			widgets.addSlot(inputStars.getFirst(), 18, starY).drawBack(false);
+			addParticles(particles, inputStars.getFirst(), starY, true, false, random);
 		}
 		int cx = getDisplayWidth() / 2 - inputItems.size() * 9;
 		for (EmiIngredient i : inputItems) {
@@ -119,7 +119,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			addParticles(particles, outputStar, starY, false, true, random);
 		}
 		if (!blocks.isEmpty()) {
-			widgets.add(new BlockSlotWidget(blocks.get(0), getDisplayWidth() / 2 - 9, starY + 1)).drawBack(false);
+			widgets.add(new BlockSlotWidget(blocks.getFirst(), getDisplayWidth() / 2 - 9, starY + 1)).drawBack(false);
 		}
 		if (inputStars.size() > 1) {
 			widgets.addSlot(inputStars.get(1), 64, starY).drawBack(false);
@@ -175,9 +175,9 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			}
 			p.time = i;
 			StarParticleType star = WellBlockEntity.createParticle(flows.get(random.nextInt(flows.size())), false, random);
-			p.r = star.red;
-			p.g = star.green;
-			p.b = star.blue;
+			p.r = star.red();
+			p.g = star.green();
+			p.b = star.blue();
 			particles.add(p);
 		}
 	}

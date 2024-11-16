@@ -11,6 +11,7 @@ import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -33,7 +34,8 @@ public abstract class MixinLightmapTextureManager {
     protected abstract float easeOutQuart(float x);
 
     @Shadow
-    protected static void clamp(Vector3f vec) {
+	private static void clamp(Vector3f vec) {
+        throw new AssertionError();
     }
 
     @Shadow
@@ -47,12 +49,13 @@ public abstract class MixinLightmapTextureManager {
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     private void cerulean$updateCustomDimensions(float delta, CallbackInfo ci) {
         ClientWorld world = MinecraftClient.getInstance().world;
-        if (world != null && CeruleanDimensions.DREAMSCAPE.equals(world.getDimensionKey().getValue())) {
+        if (world != null && world.getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
             cerulean$updateDreamscape(delta);
             ci.cancel();
         }
     }
 
+    @Unique
     private void cerulean$updateDreamscape(float delta) {
         if (this.dirty) {
             this.dirty = false;

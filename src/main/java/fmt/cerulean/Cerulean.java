@@ -1,7 +1,5 @@
 package fmt.cerulean;
 
-import java.util.List;
-
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanServerNetworking;
 import fmt.cerulean.registry.CeruleanBlockEntities;
@@ -20,7 +18,6 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
-import net.minecraft.entity.decoration.painting.PaintingVariant;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -30,6 +27,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
+
+import java.util.List;
 
 public class Cerulean implements ModInitializer {
 	public static final String ID = "cerulean";
@@ -57,10 +56,8 @@ public class Cerulean implements ModInitializer {
 		Registry.register(Registries.CHUNK_GENERATOR, id("dreamscape"), DreamscapeChunkGenerator.CODEC);
 		Registry.register(Registries.CHUNK_GENERATOR, id("skies"), SkiesChunkGenerator.CODEC);
 
-		Registry.register(Registries.PAINTING_VARIANT, id("dreams"), new PaintingVariant(16, 32));
-
 		UseItemCallback.EVENT.register((player, world, hand) -> {
-			if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (world.getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
 				return TypedActionResult.fail(ItemStack.EMPTY);
 			}
 
@@ -68,7 +65,7 @@ public class Cerulean implements ModInitializer {
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, res) -> {
-			if (player.getAbilities().allowModifyWorld && !player.getStackInHand(hand).isEmpty() && world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (player.getAbilities().allowModifyWorld && !player.getStackInHand(hand).isEmpty() && world.getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
 				return ActionResult.FAIL;
 			}
 
@@ -98,6 +95,6 @@ public class Cerulean implements ModInitializer {
 	}
 
 	public static Identifier id(String path) {
-		return new Identifier(ID, path);
+		return Identifier.of(ID, path);
 	}
 }

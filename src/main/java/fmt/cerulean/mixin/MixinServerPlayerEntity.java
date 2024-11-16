@@ -7,7 +7,6 @@ import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.DimensionState;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,6 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,21 +46,23 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 
 	@Shadow @Final public MinecraftServer server;
 
-	@Inject(method = "moveToWorld", at = @At("RETURN"))
-	private void cerulean$resetState(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
-		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
+	@Shadow @Nullable public abstract Entity teleportTo(TeleportTarget teleportTarget);
+
+	@Inject(method = "detachForDimensionChange", at = @At("RETURN"))
+	private void cerulean$resetState(CallbackInfo ci) {
+		DimensionState st = Counterful.get(this);
 		st.reset();
 		st.sync((ServerPlayerEntity) (Object)this);
 	}
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
 	private void cerulean$writeState(NbtCompound nbt, CallbackInfo ci) {
-		nbt.put("CeruleanDS", Counterful.get((PlayerEntity) (Object)this).nbt());
+		nbt.put("CeruleanDS", Counterful.get(this).nbt());
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	private void cerulean$readState(NbtCompound nbt, CallbackInfo ci) {
-		Counterful.get((PlayerEntity) (Object)this).read(nbt.getCompound("CeruleanDS"));
+		Counterful.get(this).read(nbt.getCompound("CeruleanDS"));
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))
@@ -78,7 +80,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 			return;
 		}
 
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
 			st.dissonance++;
 
 			if (st.ennui > 0) {
@@ -134,7 +136,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0));
 
 				if (tp != null) {
-					FabricDimensions.teleport(this, skies, new TeleportTarget(tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch()));
+					this.teleportTo(new TeleportTarget(skies, tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch(), TeleportTarget.NO_OP));
 
 					st.reset();
 					st.sync((ServerPlayerEntity) (Object)this);
@@ -154,13 +156,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 
 	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noDrops(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().matchesId(CeruleanDimensions.DREAMSCAPE)) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "copyFrom", at = @At("TAIL"))
 	private void cerulean$copy(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
-//		Counterful.get((PlayerEntity) (Object)this).read(Counterful.get(oldPlayer).nbt());
+//		Counterful.get(this).read(Counterful.get(oldPlayer).nbt());
 	}
 }

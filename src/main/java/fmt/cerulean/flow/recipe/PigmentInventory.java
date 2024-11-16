@@ -1,6 +1,5 @@
 package fmt.cerulean.flow.recipe;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -11,14 +10,14 @@ import fmt.cerulean.mixin.ItemEntityAccessor;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class PigmentInventory extends SimpleInventory {
+public class PigmentInventory extends SimpleInventory implements RecipeInput {
 	public final FlowState flow, opposing;
 	public final World world;
 	public final BlockPos pos;
@@ -102,5 +101,15 @@ public class PigmentInventory extends SimpleInventory {
 	public void spawnResult(ItemStack stack) {
 		ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, stack);
 		world.spawnEntity(entity);
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		return getStack(slot);
+	}
+
+	@Override
+	public int getSize() {
+		return size();
 	}
 }

@@ -13,8 +13,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 
-import java.util.Optional;
-
 public final class CeruleanBlocks {
 	public static final Block STAR_WELL = register("star_well",
 		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
@@ -176,7 +174,7 @@ public final class CeruleanBlocks {
 
 	private static AbstractBlock.Settings offsetter(AbstractBlock.Settings settings) {
 
-		((BlockSettingsAccessor)settings).setOffsetter(Optional.of(new SixSideOffsetter()));
+		((BlockSettingsAccessor)settings).setOffsetter(new SixSideOffsetter());
 
 		return settings;
 	}
