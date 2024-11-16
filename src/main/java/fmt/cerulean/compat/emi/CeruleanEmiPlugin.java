@@ -51,7 +51,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 		registry.addCategory(BRUSHING);
 		registry.addWorkstation(BRUSHING, EmiStack.of(CeruleanBlocks.STAR_WELL));
 		for (BrushRecipe recipe : Stream.concat(BrushRecipes.SOLO_RECIPES.stream(), BrushRecipes.DUAL_RECIPES.stream()).toList()) {
-			Identifier id = BrushRecipes.GET_ID.get(recipe);
+			Identifier id = BrushRecipes.GET_ID.get(recipe).withPrefixedPath("/");
 			if (recipe instanceof InspirationBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					inputStars(real.canvas),

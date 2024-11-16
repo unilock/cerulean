@@ -30,7 +30,7 @@ public class PigmentInventory extends SimpleInventory implements RecipeInput {
 	}
 
 	public PigmentInventory(FlowState flow, FlowState opposing, World world, BlockPos pos, Direction direction, List<ItemEntity> entities) {
-		super(entities.stream().map(e -> e.getStack()).toArray(i -> new ItemStack[i]));
+		super(entities.stream().map(ItemEntity::getStack).toArray(ItemStack[]::new));
 		this.flow = flow;
 		this.opposing = opposing;
 		this.world = world;

@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.math.ColorHelper;
 
 public class CeruleanClient implements ClientModInitializer {
 	@Override
@@ -35,7 +36,7 @@ public class CeruleanClient implements ClientModInitializer {
 		CeruleanClientNetworking.init();
 
 		ColorProviderRegistry.ITEM.register((stack, index) -> {
-			return WellBlockEntity.getRgb(((StarItem) stack.getItem()).resource);
-		}, CeruleanItems.STARS.values().stream().toArray(i -> new ItemConvertible[i]));
+			return ColorHelper.Argb.fullAlpha(WellBlockEntity.getRgb(((StarItem) stack.getItem()).resource));
+		}, CeruleanItems.STARS.values().toArray(ItemConvertible[]::new));
 	}
 }
