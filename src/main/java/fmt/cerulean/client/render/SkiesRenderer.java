@@ -20,16 +20,14 @@ public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
 
 	@Override
 	public void render(WorldRenderContext context) {
-		MatrixStack matrices = context.matrixStack();
-		Matrix4f proj = context.projectionMatrix();
-		if (matrices == null || proj == null) {
-			System.out.println("matrices are null");
-			return;
-		}
-
 		if (vbo == null) {
 			vbo = RenderVFX.renderStars(Tessellator.getInstance());
 		}
+
+		MatrixStack matrices = new MatrixStack();
+		matrices.multiplyPositionMatrix(context.positionMatrix());
+
+		Matrix4f proj = context.projectionMatrix();
 
 		BackgroundRenderer.clearFog();
 
